@@ -1,31 +1,35 @@
-from decimal import Decimal;
+from decimal import Decimal
 
-from store.models import Product;
+from store.models import Product
 
-class Cart():
 
+class Cart:
     """
-    A base Cart class, providing some default bahaviors that can be inherited or overrided, as necessary.
+    A base Cart class, providing some default behaviors that can be inherited or overridden, as necessary.
     """
 
     def __init__(self, request):
-
         self.session = request.session
-        cart = self.session.get('skey')
-        if 'sky' not in request.session:
-            cart = self.session['skey'] = {}
+        cart = self.session.get("skey")
+        if "skey" not in request.session:
+            # if not cart:
+            cart = self.session["skey"] = {}
         self.cart = cart
 
-
-    def add(self, product):
-
+    def add(self, product, qty):
         """
-        Adding and updating the users cart session data
+        Adding and updating the user's cart session data
         """
         product_id = str(product.id)
-
         if product_id not in self.cart:
-            self.cart[product_id] = {'price': product.price}
-
+            self.cart[product_id] = {
+                "price": str(product.price), 
+                "qty": int(qty)}
 
         self.session.modified = True
+
+    def __len__(self):
+        """"
+        Get the cart data and count the qty of items
+        """
+        return sum(item['qty'] for item in self.cart.values())
