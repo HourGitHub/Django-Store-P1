@@ -21,7 +21,8 @@
                     <div class="col border-bottom">
                         <div class="row p-3">
                             <div class="col-6">Hardback Book</div>
-                            <div class="col-6 text-end"><span class="h6 fw-bold">${{item.total_price}}</span></div>
+                            {% comment %} <div class="col-6 text-end"><span class="h6 fw-bold">${{item.total_price}}</span></div> {% endcomment %}
+                            <div class="col-6 text-end"><span class="h6 fw-bold">${{product.price}}</span></div>
                         </div>
                     </div>
 
@@ -36,8 +37,7 @@
                                     <option value="3">3</option>
                                     <option value="4">4</option>
                                 </select>
-                                <button type="button" id="update-button" data-index="{{product.id}}"
-                                        class="btn btn-outline-secondary btn-sm update-button">
+                                <button type="button" id="update-button" data-index="{{product.id}}" class="btn btn-outline-secondary btn-sm update-button">
                                     Update
                                 </button>
                                 <button type="button" id="delete-button" data-index="{{product.id}}"
@@ -85,7 +85,7 @@
 
 
       // Update Item
-  {% comment %} $(document).on('click', '.update-button', function (e) {
+  $(document).on('click', '.update-button', function (e) {
     e.preventDefault();
     var prodid = $(this).data('index');
     $.ajax({
@@ -103,8 +103,8 @@
       },
       error: function (xhr, errmsg, err) {}
     });
-  }) {% endcomment %}
-
+  })
+  
 </script>
 
 {% endblock %}

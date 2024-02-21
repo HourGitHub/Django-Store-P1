@@ -40,10 +40,10 @@
                     </ul>
     
                     <!-- Search Form -->
-                    <form class="d-flex flex-nowrap">
+                    {% comment %} <form class="d-flex flex-nowrap">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+                    </form> {% endcomment %}
     
                     <!-- Cart Button -->
                     <a type="button" role="button" href="{% url "cart:cart_summary" %}" 
