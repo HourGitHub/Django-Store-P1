@@ -7,7 +7,7 @@ from .cart import Cart
 
 def cart_summary(request):
     cart = Cart(request)
-    return render(request, 'store/cart/summary.html', {'cart': cart})
+    return render(request, 'cart/summary.html', {'cart': cart})
 
 
 def cart_add(request):
@@ -46,6 +46,6 @@ def cart_update(request):
 
         cartqty = cart.__len__()
         carttotal = cart.get_total_price()
-        print(carttotal)
+        # print(carttotal)
         response = JsonResponse({'qty': cartqty, 'subtotal': carttotal})
         return response
