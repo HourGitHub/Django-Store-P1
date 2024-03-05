@@ -17,6 +17,40 @@
     <link rel="stylesheet" href="{% static 'cart/css/cart.css' %}">
     
 
+    <style>
+        .fab.fa-facebook-f:hover {
+            color: #3b5998; /* Facebook blue */
+        }
+    
+        .fab.fa-twitter:hover {
+            color: #1da1f2; /* Twitter blue */
+        }
+    
+        .fab.fa-google:hover {
+            color: #db4437; /* Google red */
+        }
+    
+        .fab.fa-instagram:hover {
+            color: #bc2a8d; /* Instagram purple */
+        }
+    
+        .fab.fa-linkedin:hover {
+            color: #0077b5; /* LinkedIn blue */
+        }
+    
+        .fab.fa-github:hover {
+            color: #171515; /* GitHub black */
+        }
+
+        .icon-zoom {
+            transition: transform 0.3s ease;
+        }
+    
+        .icon-zoom:hover {
+            transform: translateY(-5px) scale(2.6); /* Move the icon upwards */
+        }
+    </style>
+
     
 </head>
 
@@ -66,7 +100,7 @@
                     <!-- Right Navbar Login and Account -->
 
                     {% if user.is_authenticated %}
-                    <a type="button" role="button" href="#"
+                    <a type="button" role="button" href="{% url "account:logout" %}"
                         class="btn btn-outline-secondary border-0 cart-btn">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
@@ -172,26 +206,27 @@
             <!-- Left -->
         
             <!-- Right -->
-            <div>
-              <a href="" class="me-4 text-reset">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="" class="me-4 text-reset">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="" class="me-4 text-reset">
-                <i class="fab fa-google"></i>
-              </a>
-              <a href="" class="me-4 text-reset">
-                <i class="fab fa-instagram"></i>
-              </a>
-              <a href="" class="me-4 text-reset">
-                <i class="fab fa-linkedin"></i>
-              </a>
-              <a href="" class="me-4 text-reset">
-                <i class="fab fa-github"></i>
-              </a>
+            <div class="d-flex">
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-facebook-f icon-zoom"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-twitter icon-zoom"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-google icon-zoom"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-instagram icon-zoom"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-linkedin icon-zoom"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="fab fa-github icon-zoom"></i>
+                </a>
             </div>
+            
             <!-- Right -->
           </section>
 
