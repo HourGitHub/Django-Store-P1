@@ -1,13 +1,3 @@
-# from base64 import urlsafe_b64encode
-# from django.contrib.sites.shortcuts import get_current_site
-# from django.shortcuts import redirect, render
-# from django.template.loader import render_to_string
-# from django.utils.encoding import force_bytes
-# from account.tokens import AccountActivationTokenGenerator
-# from .tokens import AccountActivationTokenGenerator
-
-
-# from .forms import RegistrationForm
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -28,7 +18,16 @@ from .tokens import account_activation_token
 @login_required
 def dashboard(request):
     return render(request, 
-                  'account/user/dashboard.html')
+                  'account/user/dashboard.html', )
+
+
+@login_required
+def delete_user(request):
+    user = UserBase.objects.get(user_name=request.user)
+    user.is_active = False
+    user.save()
+    logout(request)
+    return redirect('account:delete_confirmation')
 
 
 def account_register(request):
@@ -93,11 +92,5 @@ def edit_details(request):
                   'account/user/edit_details.html', {'user_form': user_form})
 
 
-@login_required
-def delete_user(request):
-    user = UserBase.objects.get(user_name=request.user)
-    user.is_active = False
-    user.save()
-    logout(request)
-    return redirect('account:delete_confirmation')
+
 
