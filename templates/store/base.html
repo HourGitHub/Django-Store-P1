@@ -63,7 +63,9 @@
                     <a class="navbar-brand d-flex-inline" href="/">
                         <h3>Testing</h3>
                     </a>
+
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-none d-md-block fw500" href="#" id="navbarDropdown"
                                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -113,8 +115,7 @@
                         <span class="fs15 fw500">Logout</span>
                     </a>
                     {% else %}
-                    {% comment %} <a type="button" role="button" href="{% url "account:login" %}" {% endcomment %}
-                    <a type="button" role="button" href="#"
+                    <a type="button" role="button" href="{% url "account:login" %}"
                         class="btn btn-outline-secondary border-0 cart-btn">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
@@ -128,8 +129,7 @@
                     </a>
                     {% endif %}
 
-                    {% comment %} <a type="button" role="button" href="{% url "account:dashboard" %}" {% endcomment %}
-                    <a type="button" role="button" href="#"
+                    <a type="button" role="button" href="{% url "account:dashboard" %}"
                         class="btn btn-outline-secondary border-0 cart-btn">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
