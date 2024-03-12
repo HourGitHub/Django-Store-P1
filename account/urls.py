@@ -34,7 +34,9 @@ urlpatterns = [
         TemplateView.as_view(template_name="account/user/reset_status.html"), name='password_reset_done'),                                                                                     
 
     path('password_reset_complete/',
-        TemplateView.as_view(template_name="account/user/reset_status.html"), name='password_reset_complete'),                                                           
+        TemplateView.as_view(template_name="account/user/reset_status.html"), name='password_reset_complete'),         
+
+
     # User dashboard
     path('dashboard/', views.dashboard, name='dashboard'),
     path('profile/edit/', views.edit_details, name='edit_details'),

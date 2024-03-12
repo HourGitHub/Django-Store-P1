@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-ns%71ul!zvya49472(-!um8g8$46$7&ukl+y7ai&=k98fl)amb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["yourdomain.com", "127.0.0.1"]
+# ALLOWED_HOSTS = ["yourdomain.com", "127.0.0.1", 'localhost']
+ALLOWED_HOSTS = ["yourdomain.com", "www.yourdomain.com", "127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -42,6 +43,8 @@ INSTALLED_APPS = [
     'store',
     'cart',
     'account',
+    'payment',
+    'orders',
 
 ]
 
@@ -141,7 +144,17 @@ LOGIN_URL = '/account/login/'
 # Email setting
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+
+# Stripe Payment
+# PUBLISHABLE_KEY = ''
+# SECRET_KEY = ''
+# STRIPE_ENDPOINT_SECRET = ''
+# stripe listen --forward-to localhost:8000/payment/webhook/
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

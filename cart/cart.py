@@ -1,5 +1,7 @@
 from decimal import Decimal
 
+from django.conf import settings
+
 from store.models import Product
 
 
@@ -63,8 +65,22 @@ class Cart:
             self.cart[product_id]['qty'] = qty
         self.save()
 
-    def get_total_price(self):
+    
+    def get_subtotal_price(self):
         return sum(Decimal(item['price']) * item['qty'] for item in self.cart.values())
+
+    def get_total_price(self):
+
+        subtotal = sum(Decimal(item['price']) * item['qty'] for item in self.cart.values())
+
+        if subtotal == 0:
+            shipping = Decimal(0.00)
+        else:
+            shipping = Decimal(11.50)
+
+        total = subtotal + Decimal(shipping)
+        return total
+
     
 
     def get_total_item_count(self):
@@ -92,3 +108,8 @@ class Cart:
         self.session.modified = True
 
 
+    def clear(self):
+        #Remove cart from session
+        # del self.session['skey']
+        del self.session[settings.CART_SESSION_ID]
+        self.save()
