@@ -39,7 +39,7 @@ def CartView(request):
     # )
 
     # return render(request, 'payment/home.html', {'client_secret': intent.client_secret})
-    return render(request, 'payment/home.html')
+    return render(request, 'payment/payment_form.html')
 
 # @csrf_exempt
 # def stripe_webhook(request):

@@ -136,6 +136,14 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
+# Basket session ID
+CART_SESSION_ID = 'cart'
+
+# Stripe Payment
+os.environ.setdefault('STRIPE_PUBLISHABLE_KEY', 'pk_test_51Ot3ZGKqHvYJjygX45bM69BDZqEpqFlr1ScQxUKm7tBYLz6x0EiZ3uHKJg66Vss4UQHnCrntm8VefjHzmNhOPgrC00v8rlgD8I')
+STRIPE_SECRET_KEY = 'sk_test_51Ot3ZGKqHvYJjygXWaiRvEIlASXd412WQhu7Ge1fw2AzJmgnDnZZU7Ggx2laeZz0Ao0fVGL7dWs0yGyaFJJJWLz300T2uFJgi0'
+# stripe listen --forward-to localhost:8000/payment/webhook/
+
 # Custom user model
 AUTH_USER_MODEL = 'account.UserBase'
 LOGIN_REDIRECT_URL = '/account/dashboard'

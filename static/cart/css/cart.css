@@ -26,3 +26,56 @@
     transition-duration: 0.4s;
     background-color: #fff;
 }
+
+
+
+
+
+
+/* ----ICON Style----- */
+
+
+
+
+.fab.fa-facebook-f:hover {
+    color: #3b5998;
+    /* Facebook blue */
+}
+
+.fab.fa-twitter:hover {
+    color: #1da1f2;
+    /* Twitter blue */
+}
+
+.fab.fa-google:hover {
+    color: #db4437;
+    /* Google red */
+}
+
+.fab.fa-instagram:hover {
+    color: #bc2a8d;
+    /* Instagram purple */
+}
+
+.fab.fa-linkedin:hover {
+    color: #0077b5;
+    /* LinkedIn blue */
+}
+
+.fab.fa-github:hover {
+    color: #171515;
+    /* GitHub black */
+}
+
+.icon-zoom {
+    transition: transform 0.3s ease;
+}
+
+.icon-zoom:hover {
+    transform: translateY(-5px) scale(2.6);
+    /* Move the icon upwards */
+}
+
+
+
+

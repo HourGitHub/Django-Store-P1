@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Store{% endblock %}
+{% block content %}
+
+  {% comment %} <section class="py-5 text-center container">
+    <div class="row py-lg-3">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="h1 fw-bold">Testing</h1>
+        <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator,
+          etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+        <p>
+          <a href="{../login.html}" class="btn btn-primary my-2">Make an error</a>
+        </p>
+      </div>
+    </div>
+  </section> {% endcomment %}
+
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
+    © 2025 Copyright:
+    <a class="text-body" href="#">Testing ENV </a>
+  </div>
+  <!-- Copyright -->
+ 
+  <!--Body Cards-->
+  <div class="container">
+    <div class="row">
+      <div class="album py-5">
+        <div class="pb-3">
+          <h1 class="h3">Popular</h1>
+        </div>
+        {% if not products %}
+        <div class="col-12">There are currently no products active</div>
+        {% else %}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
+          {% for product in products %}
+          <div class="col">
+            <div class="card border-0">
+              <a href="{{ product.get_absolute_url }}">
+                <img class="img-fluid" style="width: 360px; height: 210px; object-fit: cover;" alt="Product Image" src="{{ product.image.url }}">
+              </a>
+              <div class="card-body px-0">
+                <p class="card-text">
+                  <a class="text-dark text-decoration-none"
+                    href="{{ product.get_absolute_url }}">{{ product.title|slice:":50" }}...</a>
+                </p>
+                <div class="fw-bold">$ {{product.price}}</div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+  <!--Body Cards-->
