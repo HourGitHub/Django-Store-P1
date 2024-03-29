@@ -12,14 +12,14 @@ def add(request):
 
         order_key = request.POST.get('order_key')
         user_id = request.user.id
-        baskettotal = cart.get_total_price()
+        carttotal = cart.get_total_price()
 
         # Check if order exists
         if Order.objects.filter(order_key=order_key).exists():
             pass
         else:
             order = Order.objects.create(user_id=user_id, full_name='name', address1='add1',
-                                address2='add2', total_paid=baskettotal, order_key=order_key)
+                                address2='add2', total_paid=carttotal, order_key=order_key)
             order_id = order.pk
 
             for item in cart:

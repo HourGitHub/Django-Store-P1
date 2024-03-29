@@ -8,9 +8,9 @@ from store import views as store_views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("store.urls", namespace="store")),
+    path("checkout/", include("checkout.urls", namespace="checkout")),
     path("cart/", include("cart.urls", namespace="cart")),
     path("account/", include("account.urls", namespace="account")),
-    path("payment/", include("payment.urls", namespace="payment")),
     path("__debug__/", include(debug_toolbar.urls)),
 ]
 
