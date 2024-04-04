@@ -2,34 +2,51 @@
 {% block title %}Log-in{% endblock %}
 {% block sub_content %}
 
-
-
 <form class="account-form p-4 rounded" action="{% url 'account:login' %}" method="post">
-
     {% csrf_token %}
     <h3 class="mb-4">Sign In</h3>
 
     {% if form.errors %}
-    <div class="alert alert-primary" role="alert">
-        Error: Username or Password not correct!
+    <div class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i> Error: Username or Password not correct!
     </div>
     {% endif %}
 
-    <label class="form-label">{{ form.username.label}}</label>
-    {{ form.username}}
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            {{ form.username }}
+        </div>
+    </div>
 
-    <label class="form-label">{{ form.password.label}}</label>
-    {{ form.password}}
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            {{ form.password }}
+        </div>
+    </div>
+
     <div class="d-grid gap-2">
         <input type="hidden" name="next" value="{{ next }}">
-        <button class="btn btn-primary py-2 mb-4 mt-5 fw-bold" type="submit" value="Log-in">Sign in
-        </button>
+        <button class="btn btn-primary py-2 mb-4 mt-4 fw-bold" type="submit"><i class="bi bi-box-arrow-in-right"></i> Sign in</button>
     </div>
-    <div class="flex-column justify-content-center mx-auto pb-3">
-      <div class="text-center"><a href="{% url "account:register" %}">Create an account</a></div>
-      <div class="text-center"><a href="{% url "account:pwdreset" %}">Forgotten Password?</a></div>
-    </div>
-  </form>
 
+    <hr class="my-4">
+
+    <div class="mb-3">
+        <p class="text-center">Or sign in with</p>
+        <div class="text-center">
+            <a href="#" class="btn btn-outline-primary"><i class="bi bi-facebook"></i> Facebook</a>
+            <a href="#" class="btn btn-outline-danger"><i class="bi bi-google"></i> Google</a>
+        </div>
+    </div>
+
+    <div class="flex-column justify-content-center mx-auto pb-3">
+        <div class="text-center"><a href="{% url 'account:register' %}" class="text-decoration-none">Create an account</a></div>
+        <div class="text-center"><a href="{% url 'account:pwdreset' %}" class="text-decoration-none">Forgotten Password?</a></div>
+    </div>
+</form>
 
 {% endblock %}

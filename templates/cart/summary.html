@@ -1,6 +1,6 @@
 {% extends "../base.html" %}
 {% load static %}
-{% block title %}Cart Summary{%endblock %}
+{% block title %}Cart Summary{% endblock %}
 {% block content %}
 
 <div class="container">
@@ -15,32 +15,31 @@
 <div class="container">
   <div class="row g-3">
     {% if cart|length == 0 %}
-    <div class="col-12">Your cart is empty <a href="{% url 'store:store_home' %}">Shop</a></div>
+    <div class="col-12">Your cart is empty <a href="{% url 'catalogue:store_home' %}">Shop</a></div>
     {% else %}
     <div class="col-12 bg-light p-3 d-flex justify-content-between">
-      <div class="d-flex d-flex-inline">
-        <div class="pe-3">Order</div>
-        <div class="dropdown">
-          <a class="text-reset text-decoration-none dropdown-toggle" href="#" role="link" id="dropdownLink"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            Shipping options
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
-              class="bi bi-chevron-down" viewBox="0 0 16 16">
-              <path fill-rule="evenodd"
-                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-            </svg>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownLink">
-            <li class="item small">Next day delivery</li>
-            <li class="item small">Premimum delivery</li>
-          </ul>
-        </div>
-      </div>
+      
+
+      <div class="d-flex align-items-center">
+  <div class="pe-3">Order</div>
+  <div class="dropdown">
+    <a class="text-decoration-none dropdown-toggle" href="#" role="button" id="shippingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-truck me-2"></i> Shipping options
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="shippingDropdown">
+      <li><a class="dropdown-item shipping-option" href="#" data-option="next_day"><i class="bi bi-clock-history me-2"></i> Next day delivery <span class="fw-bold"></span></a></li>
+      <li><a class="dropdown-item shipping-option" href="#" data-option="premium"><i class="bi bi-gem me-2"></i> Premium delivery <span class="fw-bold"></span></a></li>
+    </ul>
+  </div>
+</div>
+
+
+
       <div class="text-end">
         <div class="">Sub Total: <span class="fw-bold">$ </span>
           <div id="subtotal" class="d-inline-flex fw-bold">{{cart.get_subtotal_price}}</div>
         </div>
-        <div id="">Shipping <span class="small">(Next day delivery)</span>: <span class="fw-bold">$ 11.50</span></div>
+<div id="selected-shipping-option">Shipping <span class="small">( Select your shippinh options )</span>: <span id="shipping-cost" class="fw-bold">$ 0.00</span></div>
         <div class="pt-2">Total to pay: <span class="fw-bold h5">$ </span><span id="total"
             class="fw-bold h5">{{cart.get_total_price}}</span></div>
       </div>
@@ -76,10 +75,10 @@
                 <option value="">3</option>
                 <option value="">4</option>
               </select>
-              <a type="button" id="update-button" data-index="{{product.id}}"
-                class="update-button text-decoration-none small ps-3">Update</a>
-              <a type="button" id="delete-button" data-index="{{product.id}}"
-                class="delete-button text-decoration-none small">Delete</a>
+              <a role="button" id="update-button" data-index="{{product.id}}"
+                class="update-button text-decoration-none btn btn-primary btn-sm">Update</a>
+              <a role="button" id="delete-button" data-index="{{product.id}}"
+                class="delete-button text-decoration-none btn btn-danger btn-sm">Delete</a>
             </div>
           </div>
         </div>
@@ -91,7 +90,42 @@
   </div>
 </div>
 
+
+
 <script>
+
+  // Update shipping option name based on selected option
+  $(document).on("click", ".shipping-option", function (e) {
+    e.preventDefault();
+    var shippingOptionName = $(this).text();
+
+    // Update shipping option name display
+    document.getElementById("selected-shipping-option").innerHTML = "Shipping <span class='small'>" + shippingOptionName + "</span>: <span id='shipping-cost' class='fw-bold'>$ 3.00</span>";
+  });
+
+
+  // Update shipping cost based on selected option
+  $(document).on("click", ".shipping-option", function (e) {
+    e.preventDefault();
+    var shippingOption = $(this).data("option");
+    var shippingCost = 0;
+
+    // Assign shipping cost based on selected option
+    if (shippingOption === "next_day") {
+      shippingCost = 3;
+    } else if (shippingOption === "premium") {
+      shippingCost = 5;
+    }
+
+    // Update shipping cost display
+    document.getElementById("shipping-cost").innerHTML = "$ " + shippingCost.toFixed(2);
+
+    // Update total amount
+    var subtotal = parseFloat(document.getElementById("subtotal").innerText);
+    var total = (subtotal + shippingCost).toFixed(2);
+    document.getElementById("total").innerHTML = + total;
+  });
+
   // Delete Item
   $(document).on("click", ".delete-button", function (e) {
     e.preventDefault();
@@ -146,6 +180,8 @@
       error: function (xhr, errmsg, err) {},
     });
   });
+
 </script>
+
 
 {% endblock %}

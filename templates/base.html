@@ -3,38 +3,40 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <title>{% block title %}Store{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <title>{% block title %}Store{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
-    </script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
+  </script>
 
-    <link rel="stylesheet" href="{% static 'core/css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'cart/css/cart.css' %}">
-    <link rel="stylesheet" href="{% block stylesheet %}{% endblock %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="{% static 'core/css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'cart/css/cart.css' %}">
+
+  <link rel="stylesheet" href="{% block stylesheet %}{% endblock %}">
 
 </head>
 
 <body>
 
-    <header">
-
-        <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom">
-            <div class="container-fluid px-md-4">
-                <div class="d-flex w-100 navbar-collapse">
-                    <a class="navbar-brand d-flex-inline" href="/">
-                        <h3>Testing</h3>
-                    </a>
-
-                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+  <header class="pb-0">
+    <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom">
+      <div class="container-fluid px-md-4">
+        <div class="d-flex w-100 navbar-collapse">
+          <a class="navbar-brand d-flex-inline" href="/">
+            <h3>Testing</h3>
+          </a>
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle d-none d-md-block fw500" href="#" id="navbarDropdown" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,7 +48,7 @@
                   </svg></i>
               </a>
               <ul class="dropdown-menu rounded-0 border-0" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{% url "store:store_home" %}">All</a></li>
+                <li><a class="dropdown-item" href="{% url "catalogue:store_home" %}">Dropdown</a></li>
                 {% for c in categories %}
                 <li {% if category.slug == c.slug %}class="selected" {% endif %}>
                   <a class="dropdown-item" href="{{ c.get_absolute_url }}">{{ c.name|title }}</a>
@@ -68,14 +70,14 @@
             <span class="fs15 fw500">Shop</span>
           </button>
           <div>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+            {% comment %} <div class="collapse navbar-collapse" id="navbarSupportedContent2">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-reset" href="#" id="navbarDropdown" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="small text-muted">Hello,
                       {% if user.is_authenticated %}
-                        {{ request.user.name }}
+                      {{ request.user.name }}
                       {% else %}
                       Login
                       {% endif %}
@@ -90,11 +92,62 @@
                         <h6 class="card-title">My Account</h6>
                         <ul class="list-group list-group-flush dropdown-account-link">
                           {% if user.is_authenticated %}
-                          <a href="{% url "account:dashboard" %}" class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Your Account</a>
-                          <a href="#" class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Orders</a>
-                          <a href="{% url "account:logout" %}" class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Logout</a>      
+                          <a href="{% url "account:dashboard" %}"
+                            class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Your
+                            Account</a>
+                          <a href="#"
+                            class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Orders</a>
+                          <form action="{% url 'account:logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit"
+                              class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Logout</button>
+                          </form>
                           {% else %}
-                          <a href="{% url "account:login" %}" class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Login</a>
+                          <a href="{% url "account:login" %}"
+                            class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Login</a>
+                          {% endif %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div> {% endcomment %}
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent2">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle text-reset" href="#" id="navbarDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    {% if user.is_authenticated %}
+
+                    <div class="small text-muted ms-2">Hello, {{ request.user.name }}</div>
+                    <span class="fs15 fw500">Account &amp; Lists</span>
+                    {% else %}
+                    <span class="fs15 fw500">
+                      <i class="fas fa-user"></i> <!-- Use your preferred login or sign-in icon here -->
+                    </span>
+                    <span class="small text-muted ms-2">Login</span>
+                    {% endif %}
+                  </a>
+                  <div class="dropdown-menu rounded-0" aria-labelledby="navbarDropdown">
+                    <div class="card border-0">
+                      <div class="card-body">
+                        <h6 class="card-title">My Account</h6>
+                        <ul class="list-group list-group-flush dropdown-account-link">
+                          {% if user.is_authenticated %}
+                          <a href="{% url "account:dashboard" %}"
+                            class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Your
+                            Account</a>
+                          <a href="#"
+                            class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Orders</a>
+                          <form action="{% url 'account:logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit"
+                              class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Logout</button>
+                          </form>
+                          {% else %}
+                          <a href="{% url "account:login" %}"
+                            class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Login</a>
                           {% endif %}
                         </ul>
                       </div>
@@ -103,6 +156,8 @@
                 </li>
               </ul>
             </div>
+
+
           </div>
           <a type="button" role="button" href="{% url "cart:cart_summary" %}"
             class="btn btn-outline-secondary border-0 cart-btn">
@@ -128,7 +183,7 @@
         <div class="d-md-none d-lg-none d-xl-none">
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-              <li><a class="dropdown-item" href="{% url "store:store_home" %}">All</a></li>
+              <li><a class="dropdown-item" href="{% url "catalogue:store_home" %}">All</a></li>
               {% for c in categories %}
               <li {% if category.slug == c.slug %}class="selected" {% endif %}>
                 <a class="dropdown-item" href="{{ c.get_absolute_url }}">{{ c.name|title }}</a>
@@ -136,15 +191,15 @@
               {% endfor %}
             </ul>
             <h6 class="card-title">My Account</h6>
-              <ul class="list-group list-group-flush dropdown-account-link">
-                {% if user.is_authenticated %}
-                <a href="{% url "account:dashboard" %}" class="dropdown-item">Your Account</a>
-                <a href="#" class="dropdown-item">Orders</a>
-                <a href="{% url "account:logout" %}" class="dropdown-item">Logout</a>      
-                {% else %}
-                <a href="{% url "account:login" %}" class="dropdown-item">Login</a>
-                {% endif %}
-              </ul>
+            <ul class="list-group list-group-flush dropdown-account-link">
+              {% if user.is_authenticated %}
+              <a href="{% url "account:dashboard" %}" class="dropdown-item">Your Account</a>
+              <a href="#" class="dropdown-item">Orders</a>
+              <a href="{% url "account:logout" %}" class="dropdown-item">Logout</a>
+              {% else %}
+              <a href="{% url "account:login" %}" class="dropdown-item">Login</a>
+              {% endif %}
+            </ul>
           </div>
         </div>
         <form class="d-flex w-100 d-md-none">
@@ -155,100 +210,129 @@
     </nav>
   </header>
 
-  <main class="pt-5">
+  <main class="pt-2">
     <div id="content">{% block content %} {% endblock %}</div>
   </main>
 
-    {% comment %} Start - Footer {% endcomment %}
+  {% comment %} Start - Footer {% endcomment %}
 
-    <footer class="container py-5 footer">
+  <footer class="container py-5 footer">
 
-        <section class="d-flex justify-content-center justify-content-lg-between">
-            <!-- Left -->
-            <div class="me-5 d-none d-lg-block">
-                <span>Get connected with us on social networks:</span>
-            </div>
-            <!-- Left -->
+    <section class="d-flex justify-content-center justify-content-lg-between">
+      <!-- Left -->
+      <div class="me-5 d-none d-lg-block">
+        <span>Get connected with us on social networks:</span>
+      </div>
+      <!-- Left -->
 
-            <!-- Right -->
-            <div class="d-flex">
-                <a href="#" class="me-4 text-reset">
-                    <i class="fab fa-facebook-f icon-zoom"></i>
-                </a>
-                <a href="#" class="me-4 text-reset">
-                    <i class="fab fa-twitter icon-zoom"></i>
-                </a>
-                <a href="#" class="me-4 text-reset">
-                    <i class="fab fa-google icon-zoom"></i>
-                </a>
-                <a href="#" class="me-4 text-reset">
-                    <i class="fab fa-instagram icon-zoom"></i>
-                </a>
-                <a href="#" class="me-4 text-reset">
-                    <i class="fab fa-linkedin icon-zoom"></i>
-                </a>
-                <a href="#" class="me-4 text-reset">
-                    <i class="fab fa-github icon-zoom"></i>
-                </a>
-            </div>
+      <!-- Right -->
+      <div class="d-flex">
+        <a href="#" class="me-4 text-reset">
+          <i class="fab fa-facebook-f icon-zoom"></i>
+        </a>
+        <a href="#" class="me-4 text-reset">
+          <i class="fab fa-twitter icon-zoom"></i>
+        </a>
+        <a href="#" class="me-4 text-reset">
+          <i class="fab fa-google icon-zoom"></i>
+        </a>
+        <a href="#" class="me-4 text-reset">
+          <i class="fab fa-instagram icon-zoom"></i>
+        </a>
+        <a href="#" class="me-4 text-reset">
+          <i class="fab fa-linkedin icon-zoom"></i>
+        </a>
+        <a href="#" class="me-4 text-reset">
+          <i class="fab fa-github icon-zoom"></i>
+        </a>
+      </div>
 
-            <!-- Right -->
-        </section>
+      <!-- Right -->
+    </section>
 
-        <hr>
-        <div class="row pt-4">
-            <div class="col-12 col-md">
-                {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-asterisk" viewBox="0 0 16 16">
-                    <path
-                        d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
-                </svg> {% endcomment %}
-                <h2>Testing</h2>
-                <small class="d-block mb-3 text-muted">&copy; 2023-2024</small>
-            </div>
-            <div class="col-6 col-md fs15">
-                <h5>Features</h5>
-                <ul class="list-unstyled">
-                    <li><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md fs15">
-                <h5>Resources</h5>
-                <ul class="list-unstyled">
-                    <li><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md fs15">
-                <h5>Resources</h5>
-                <ul class="list-unstyled">
-                    <li><a class="link-secondary text-decoration-none" href="#">Business</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Education</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Government</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Gaming</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
-                <h5>About</h5>
-                <ul class="list-unstyled">
-                    <li><a class="link-secondary text-decoration-none" href="#">Team</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
+    <hr>
+    <div class="row pt-4">
+      <div class="col-12 col-md">
+        {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-asterisk" viewBox="0 0 16 16">
+          <path
+            d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
+        </svg> {% endcomment %}
+        <h2>Testing</h2>
+        <small class="d-block mb-3 text-muted">&copy; 2023-2024</small>
+      </div>
+      <div class="col-6 col-md fs15">
+        <h5>Features</h5>
+        <ul class="list-unstyled">
+          <li><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md fs15">
+        <h5>Resources</h5>
+        <ul class="list-unstyled">
+          <li><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md fs15">
+        <h5>Resources</h5>
+        <ul class="list-unstyled">
+          <li><a class="link-secondary text-decoration-none" href="#">Business</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Education</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Government</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Gaming</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md">
+        <h5>About</h5>
+        <ul class="list-unstyled">
+          <li><a class="link-secondary text-decoration-none" href="#">Team</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
+          <li><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
 
-    {% comment %} END - Footer {% endcomment %}
+  {% comment %} END - Footer {% endcomment %}
 
 </body>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  let currentIndex = 0;
+  const slides = document.querySelectorAll(".slide");
+  const slideCount = slides.length;
+
+  function showSlide(index) {
+    for (let i = 0; i < slideCount; i++) {
+      slides[i].style.display = "none";
+    }
+    slides[index].style.display = "block";
+  }
+
+  function nextSlide() {
+    currentIndex++;
+    if (currentIndex >= slideCount) {
+      currentIndex = 0;
+    }
+    showSlide(currentIndex);
+  }
+
+  // Show the first slide initially
+  showSlide(currentIndex);
+
+  // Automatically transition to the next slide every 5 seconds
+  setInterval(nextSlide, 5000);
+});
+</script>
 
 </html>
