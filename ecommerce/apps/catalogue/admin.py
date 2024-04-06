@@ -9,6 +9,7 @@ from .models import (
     ProductSpecification,
     ProductSpecificationValue,
     ProductType,
+    SideImages,
 )
 
 admin.site.register(Category, MPTTModelAdmin)
@@ -39,3 +40,9 @@ class ProductAdmin(admin.ModelAdmin):
         ProductSpecificationValueInline,
         ProductImageInline,
     ]
+
+
+@admin.register(SideImages)
+class SideImagesAdmin(admin.ModelAdmin):
+    list_display = ["image", "is_feature", "created_at", "updated_at"]
+    search_fields = ["image"]

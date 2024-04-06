@@ -2,54 +2,73 @@
 {% block title %}Store - Low Prices in Books & more{% endblock %}
 {% block content %}
 
-{% comment %} <section class="slideshow" >
-  <div class="px-0">
+
+<section class="slideshow">
+  <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <img class="slide" src="https://wallpapers.com/images/featured/widescreen-3ao0esn9qknhdudj.jpg" alt="Image 1" style="height: 420; width: 100%;">
-        <img class="slide" src="https://static.vecteezy.com/system/resources/previews/023/036/288/original/nature-spring-landscape-with-green-field-with-cloud-blue-sky-horizon-natural-rural-countryside-by-the-lake-with-forest-tree-mountains-in-sunny-day-cartoon-for-spring-summer-banner-vector.jpg" alt="Image 2"style="height: 420; width: 100%;">
-        <img class="slide" src="https://wallpapers.com/images/hd/fall-farm-3200-x-1200-0lfzknk9f616dk18.jpg" alt="Image 3"style="height: 420; width: 100%;">
-      </div>
-    </div>
-  </div>
-</section> {% endcomment %}
-
-
-<div class="container">
-  <div class="container">
-    <div class="row">
-      <div class="album py-5">
-        <div class="pb-3">
-          <h1 class="h3">Popular</h1>
-        </div>
-        {% if not products %}
-        <div class="col-12">There are currently no products active</div>
-        {% else %}
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
-          {% for product in products %}
-          <div class="col">
-            <div class="card border-0">
-              {% for image in product.product_image.all %}
-              {% if image.is_feature%}
-              <img class="img-fluid" alt="Responsive image" src="{{ image.image.url }}"
-                alt="{{ image.image.alt_text }}">
-              {% endif %}
-              {% endfor %}
-              <div class="card-body px-0">
-                <p class="card-text">
-                  <a class="text-dark text-decoration-none"
-                    href="{{ product.get_absolute_url }}">{{ product.title|slice:":50" }}...</a>
-                </p>
-                <div class="fw-bold">${{product.regular_price}}</div>
-              </div>
-            </div>
-          </div>
+        <div class="image-container" style="max-width: 100%;">
+          {% for side_image in side_images %}
+          <img class="slide" src="{{ side_image.image.url }}" alt="Image {{ forloop.counter }}" style="height: 420px; width: 100%;">
           {% endfor %}
         </div>
-        {% endif %}
       </div>
     </div>
   </div>
+</section>
+
+<hr>
+<div class="container-fluid">
+
+<div class="container-md">
+  <div class="row">
+    <div class="album py-3">
+      <div class="pb-3">
+        <h1 class="h3">Popular</h1>
+      </div>
+      {% if not products %}
+      <div class="col-12">There are currently no products active</div>
+      {% else %}
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
+        {% for product in products %}
+        <div class="col">
+          <div class="card border-0">
+            {% for image in product.product_image.all %}
+            {% if image.is_feature%}
+            <a href="{{ product.get_absolute_url }}">
+              <img class="img-fluid" alt="Responsive image" src="{{ image.image.url }}"
+                alt="{{ image.image.alt_text }}" width="320" height="320">
+            </a>
+            {% endif %}
+            {% endfor %}
+            <div class="card-body px-0">
+              <p class="card-text">
+                  {% if product.title|length > 9 %}
+                    {{ product.title|slice:":9" }}... <span class="text-primary">See more</span>
+                  {% else %}
+                    {{ product.title }}
+                  {% endif %}
+              </p>
+              <p class="card-text">
+                <a href="{{ product.get_absolute_url }}" class="text-dark text-decoration-none">
+                  {% if product.description|length > 28 %}
+                    {{ product.description|slice:":28" }}... <span class="text-primary">See more</span>
+                  {% else %}
+                    {{ product.description }}
+                  {% endif %}
+                </a>
+              </p>
+              <div class="fw-bold">${{product.regular_price}}</div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
 
   {% endblock %}
 

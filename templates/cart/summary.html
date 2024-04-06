@@ -18,30 +18,24 @@
     <div class="col-12">Your cart is empty <a href="{% url 'catalogue:store_home' %}">Shop</a></div>
     {% else %}
     <div class="col-12 bg-light p-3 d-flex justify-content-between">
-      
-
       <div class="d-flex align-items-center">
-  <div class="pe-3">Order</div>
-  <div class="dropdown">
-    <a class="text-decoration-none dropdown-toggle" href="#" role="button" id="shippingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-      <i class="bi bi-truck me-2"></i> Shipping options
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="shippingDropdown">
-      <li><a class="dropdown-item shipping-option" href="#" data-option="next_day"><i class="bi bi-clock-history me-2"></i> Next day delivery <span class="fw-bold"></span></a></li>
-      <li><a class="dropdown-item shipping-option" href="#" data-option="premium"><i class="bi bi-gem me-2"></i> Premium delivery <span class="fw-bold"></span></a></li>
-    </ul>
-  </div>
-</div>
-
-
-
+        <div class="pe-3">Order</div>
+        <div class="dropdown">
+          <a class="text-decoration-none dropdown-toggle" href="#" role="button" id="shippingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-truck me-2"></i> Shipping options
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="shippingDropdown">
+            <li><a class="dropdown-item shipping-option" href="#" data-option="next_day"><i class="bi bi-clock-history me-2"></i> Next day delivery <span class="fw-bold"></span></a></li>
+            <li><a class="dropdown-item shipping-option" href="#" data-option="premium"><i class="bi bi-gem me-2"></i> Premium delivery <span class="fw-bold"></span></a></li>
+          </ul>
+        </div>
+      </div>
       <div class="text-end">
         <div class="">Sub Total: <span class="fw-bold">$ </span>
           <div id="subtotal" class="d-inline-flex fw-bold">{{cart.get_subtotal_price}}</div>
         </div>
-<div id="selected-shipping-option">Shipping <span class="small">( Select your shippinh options )</span>: <span id="shipping-cost" class="fw-bold">$ 0.00</span></div>
-        <div class="pt-2">Total to pay: <span class="fw-bold h5">$ </span><span id="total"
-            class="fw-bold h5">{{cart.get_total_price}}</span></div>
+        <div id="selected-shipping-option">Shipping <span class="small">( Select your shipping options )</span>: <span id="shipping-cost" class="fw-bold">$ 0.00</span></div>
+        <div class="pt-2">Total to pay: <span class="fw-bold h5">$ </span><span id="total" class="fw-bold h5">{{cart.get_total_price}}</span></div>
       </div>
     </div>
     <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
@@ -67,18 +61,22 @@
               <a class="text-decoration-none text-reset" href="{{item.product.get_absolute_url}}">
                 <p class="card-text pb-3">{{product.title}}</p>
               </a>
-              <label for="select">Qty</label>
-              <select id="select{{product.id}}" style="width:50px;height:31px;">
-                <option value="" selected disabled hidden>{{item.qty}}</option>
-                <option value="">1</option>
-                <option value="">2</option>
-                <option value="">3</option>
-                <option value="">4</option>
-              </select>
-              <a role="button" id="update-button" data-index="{{product.id}}"
-                class="update-button text-decoration-none btn btn-primary btn-sm">Update</a>
-              <a role="button" id="delete-button" data-index="{{product.id}}"
-                class="delete-button text-decoration-none btn btn-danger btn-sm">Delete</a>
+
+              
+             <div class="d-flex align-items-center w-50 mt-2">
+  <label for="quantity" class="me-2">Qty:</label>
+  <div class="input-group me-2">
+    <button class="btn btn-outline-secondary" type="button" id="minus-btn{{product.id}}">-</button>
+    <input type="text" class="form-control store-select-dropdown" id="quantity{{product.id}}" value="{{ item.qty }}" readonly>
+    <button class="btn btn-outline-secondary" type="button" id="plus-btn{{product.id}}">+</button>
+  </div>
+  <a role="button" id="update-button" data-index="{{product.id}}" class="update-button text-decoration-none btn btn-primary btn-sm me-2">Update</a>
+  <a role="button" id="delete-button" data-index="{{product.id}}" class="delete-button text-decoration-none btn btn-danger btn-sm">Delete</a>
+</div>
+
+
+
+              
             </div>
           </div>
         </div>
@@ -90,97 +88,90 @@
   </div>
 </div>
 
-
-
 <script>
+  $(document).ready(function() {
+    {% for item in cart %}
+    var productId = "{{ item.product.id }}";
+    $('#plus-btn{{ productId }}').click(function() {
+      var value = parseInt($('#quantity{{ productId }}').val());
+      $('#quantity{{ productId }}').val(value + 1);
+    });
 
-  // Update shipping option name based on selected option
-  $(document).on("click", ".shipping-option", function (e) {
-    e.preventDefault();
-    var shippingOptionName = $(this).text();
+    $('#minus-btn{{ productId }}').click(function() {
+      var value = parseInt($('#quantity{{ productId }}').val());
+      if (value > 1) {
+        $('#quantity{{ productId }}').val(value - 1);
+      }
+    });
+    {% endfor %}
 
-    // Update shipping option name display
-    document.getElementById("selected-shipping-option").innerHTML = "Shipping <span class='small'>" + shippingOptionName + "</span>: <span id='shipping-cost' class='fw-bold'>$ 3.00</span>";
-  });
+    $(document).on("click", ".shipping-option", function(e) {
+      e.preventDefault();
+      var shippingOptionName = $(this).text();
+      document.getElementById("selected-shipping-option").innerHTML = "Shipping <span class='small'>" + shippingOptionName + "</span>: <span id='shipping-cost' class='fw-bold'>$ 3.00</span>";
+      var shippingOption = $(this).data("option");
+      var shippingCost = 0;
+      if (shippingOption === "next_day") {
+        shippingCost = 3;
+      } else if (shippingOption === "premium") {
+        shippingCost = 5;
+      }
+      document.getElementById("shipping-cost").innerHTML = "$ " + shippingCost.toFixed(2);
+      var subtotal = parseFloat(document.getElementById("subtotal").innerText);
+      var total = (subtotal + shippingCost).toFixed(2);
+      document.getElementById("total").innerHTML = +total;
+    });
 
+    $(document).on("click", ".delete-button", function(e) {
+      e.preventDefault();
+      var prodid = $(this).data("index");
+      $.ajax({
+        type: "POST",
+        url: '{% url "cart:cart_delete" %}',
+        data: {
+          productid: $(this).data("index"),
+          csrfmiddlewaretoken: "{{csrf_token}}",
+          action: "post",
+        },
+        success: function(json) {
+          $('.product-item[data-index="' + prodid + '"]').remove();
+          if (json.qty == 0) {
+            total = 0
+            subtotal = 0
+          } else {
+            total = (parseFloat(json.subtotal) + 11.50).toFixed(2);
+            subtotal = json.subtotal
+          }
+          document.getElementById("subtotal").innerHTML = subtotal;
+          document.getElementById("cart-qty").innerHTML = json.qty;
+          document.getElementById("total").innerHTML = total;
+        },
+        error: function(xhr, errmsg, err) {},
+      });
+    });
 
-  // Update shipping cost based on selected option
-  $(document).on("click", ".shipping-option", function (e) {
-    e.preventDefault();
-    var shippingOption = $(this).data("option");
-    var shippingCost = 0;
-
-    // Assign shipping cost based on selected option
-    if (shippingOption === "next_day") {
-      shippingCost = 3;
-    } else if (shippingOption === "premium") {
-      shippingCost = 5;
-    }
-
-    // Update shipping cost display
-    document.getElementById("shipping-cost").innerHTML = "$ " + shippingCost.toFixed(2);
-
-    // Update total amount
-    var subtotal = parseFloat(document.getElementById("subtotal").innerText);
-    var total = (subtotal + shippingCost).toFixed(2);
-    document.getElementById("total").innerHTML = + total;
-  });
-
-  // Delete Item
-  $(document).on("click", ".delete-button", function (e) {
-    e.preventDefault();
-    var prodid = $(this).data("index");
-    $.ajax({
-      type: "POST",
-      url: '{% url "cart:cart_delete" %}',
-      data: {
-        productid: $(this).data("index"),
-        csrfmiddlewaretoken: "{{csrf_token}}",
-        action: "post",
-      },
-      success: function (json) {
-        $('.product-item[data-index="' + prodid + '"]').remove();
-
-        if (json.qty == 0) {
-          total = 0
-          subtotal = 0
-        } else {
+    $(document).on("click", ".update-button", function(e) {
+      e.preventDefault();
+      var prodid = $(this).data("index");
+      $.ajax({
+        type: "POST",
+        url: '{% url "cart:cart_update" %}',
+        data: {
+          productid: $(this).data("index"),
+          productqty: $("#quantity" + prodid + " option:selected").text(),
+          csrfmiddlewaretoken: "{{csrf_token}}",
+          action: "post",
+        },
+        success: function(json) {
           total = (parseFloat(json.subtotal) + 11.50).toFixed(2);
-          subtotal = json.subtotal
-        }
-
-        document.getElementById("subtotal").innerHTML = subtotal;
-        document.getElementById("cart-qty").innerHTML = json.qty;
-        document.getElementById("total").innerHTML = total;
-      },
-      error: function (xhr, errmsg, err) {},
+          document.getElementById("cart-qty").innerHTML = json.qty;
+          document.getElementById("subtotal").innerHTML = json.subtotal;
+          document.getElementById("total").innerHTML = total;
+        },
+        error: function(xhr, errmsg, err) {},
+      });
     });
   });
-
-  // Update Item
-  $(document).on("click", ".update-button", function (e) {
-    e.preventDefault();
-    var prodid = $(this).data("index");
-    $.ajax({
-      type: "POST",
-      url: '{% url "cart:cart_update" %}',
-      data: {
-        productid: $(this).data("index"),
-        productqty: $("#select" + prodid + " option:selected").text(),
-        csrfmiddlewaretoken: "{{csrf_token}}",
-        action: "post",
-      },
-      success: function (json) {
-
-        total = (parseFloat(json.subtotal) + 11.50).toFixed(2);
-        document.getElementById("cart-qty").innerHTML = json.qty;
-        document.getElementById("subtotal").innerHTML = json.subtotal;
-        document.getElementById("total").innerHTML = total;
-      },
-      error: function (xhr, errmsg, err) {},
-    });
-  });
-
 </script>
 
 

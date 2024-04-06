@@ -2,10 +2,21 @@ from django.shortcuts import get_object_or_404, render
 
 from .models import Category, Product
 
+from .models import SideImages
+
+# def product_all(request):
+#     products = Product.objects.prefetch_related("product_image").filter(is_active=True)
+#     return render(request, "catalogue/index.html", {"products": products})
+
 
 def product_all(request):
     products = Product.objects.prefetch_related("product_image").filter(is_active=True)
-    return render(request, "catalogue/index.html", {"products": products})
+    side_images = SideImages.objects.filter(is_feature=True)
+    return render(
+        request,
+        "catalogue/index.html",
+        {"products": products, "side_images": side_images},
+    )
 
 
 # def category_list(request, category_slug=None):

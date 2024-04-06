@@ -70,49 +70,7 @@
             <span class="fs15 fw500">Shop</span>
           </button>
           <div>
-            {% comment %} <div class="collapse navbar-collapse" id="navbarSupportedContent2">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle text-reset" href="#" id="navbarDropdown" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="small text-muted">Hello,
-                      {% if user.is_authenticated %}
-                      {{ request.user.name }}
-                      {% else %}
-                      Login
-                      {% endif %}
-                    </div>
-                    <span class="fs15 fw500">Account &amp; Lists
-                    </span>
-                    </span>
-                  </a>
-                  <div class="dropdown-menu rounded-0" aria-labelledby="navbarDropdown">
-                    <div class="card border-0">
-                      <div class="card-body">
-                        <h6 class="card-title">My Account</h6>
-                        <ul class="list-group list-group-flush dropdown-account-link">
-                          {% if user.is_authenticated %}
-                          <a href="{% url "account:dashboard" %}"
-                            class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Your
-                            Account</a>
-                          <a href="#"
-                            class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Orders</a>
-                          <form action="{% url 'account:logout' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit"
-                              class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Logout</button>
-                          </form>
-                          {% else %}
-                          <a href="{% url "account:login" %}"
-                            class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Login</a>
-                          {% endif %}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div> {% endcomment %}
+            
             <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent2">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
@@ -216,7 +174,7 @@
 
   {% comment %} Start - Footer {% endcomment %}
 
-  <footer class="container py-5 footer">
+  <footer class="container-fluid">
 
     <section class="d-flex justify-content-center justify-content-lg-between">
       <!-- Left -->
@@ -307,32 +265,44 @@
 </body>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  let currentIndex = 0;
-  const slides = document.querySelectorAll(".slide");
-  const slideCount = slides.length;
+  var sideImages = [
+    {% for side_image in side_images %}
+      "{{ side_image.image.url }}",
+    {% endfor %}
+  ];
 
-  function showSlide(index) {
-    for (let i = 0; i < slideCount; i++) {
-      slides[i].style.display = "none";
+  var slideIndex = 0;
+
+  function showSlide() {
+    var slides = document.querySelectorAll('.slide');
+
+    // Hide all slides
+    for (var i = 0; i < slides.length; i++) {
+      slides[i].style.display = 'none';
     }
-    slides[index].style.display = "block";
+
+    // Show the current slide
+    slides[slideIndex].style.display = 'block';
+
+    // Increment slideIndex for next slide
+    slideIndex++;
+
+    // Reset slideIndex to 0 if it exceeds the number of slides
+    if (slideIndex >= slides.length) {
+      slideIndex = 0;
+    }
+
+    // Set the source of the current slide to the next side image
+    slides[slideIndex].src = sideImages[slideIndex];
+
+    // Call showSlide function again after 10 seconds (10000 milliseconds)
+    setTimeout(showSlide, 3000);
   }
 
-  function nextSlide() {
-    currentIndex++;
-    if (currentIndex >= slideCount) {
-      currentIndex = 0;
-    }
-    showSlide(currentIndex);
-  }
-
-  // Show the first slide initially
-  showSlide(currentIndex);
-
-  // Automatically transition to the next slide every 5 seconds
-  setInterval(nextSlide, 5000);
-});
+  // Call the showSlide function to start the slideshow
+  showSlide();
 </script>
+
+
 
 </html>

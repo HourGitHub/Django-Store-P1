@@ -192,3 +192,16 @@ class ProductImage(models.Model):
     class Meta:
         verbose_name = _("Product Image")
         verbose_name_plural = _("Product Images")
+
+
+class SideImages(models.Model):
+    image = models.ImageField(verbose_name="Image", upload_to="side_images/")
+    is_feature = models.BooleanField(default=False)
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    ) 
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Side Image"
+        verbose_name_plural = "Side Images"
