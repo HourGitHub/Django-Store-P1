@@ -43,8 +43,8 @@
             {% endfor %}
             <div class="card-body px-0">
               <p class="card-text">
-                  {% if product.title|length > 9 %}
-                    {{ product.title|slice:":9" }}... <span class="text-primary">See more</span>
+                  {% if product.title|length > 28 %}
+                    {{ product.title|slice:":28" }}... <span class="text-primary"></span>
                   {% else %}
                     {{ product.title }}
                   {% endif %}

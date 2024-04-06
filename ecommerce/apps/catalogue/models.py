@@ -1,8 +1,12 @@
+import random
+import string
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
+from django.utils.text import slugify
+from django.core.exceptions import ValidationError
 
 
 class Category(MPTTModel):
@@ -79,9 +83,15 @@ class ProductSpecification(models.Model):
         return self.name
 
 
+def generate_random_string(length=6):
+    """Generate a random string of letters and digits."""
+    characters = string.ascii_letters + string.digits
+    return "".join(random.choice(characters) for _ in range(length))
+
+
 class Product(models.Model):
     """
-    The Product table contining all product items.
+    The Product table containing all product items.
     """
 
     product_type = models.ForeignKey(ProductType, on_delete=models.RESTRICT)
@@ -94,7 +104,14 @@ class Product(models.Model):
     description = models.TextField(
         verbose_name=_("description"), help_text=_("Not Required"), blank=True
     )
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        blank=True,
+        help_text=_(
+            "<span style='color:red;'>Your own slug or a unique identifier will be added automatically.</span>"
+        ),
+    )  # Slug field
     regular_price = models.DecimalField(
         verbose_name=_("Regular price"),
         help_text=_("Maximum 999.99"),
@@ -134,6 +151,18 @@ class Product(models.Model):
         ordering = ("-created_at",)
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
+
+    def save(self, *args, **kwargs):
+        # Generate slug from title if not provided or changed
+        if (
+            not self.slug
+            or self.title != self._meta.model.objects.get(pk=self.pk).title
+        ):
+            base_slug = slugify(self.title)
+            random_suffix = generate_random_string()
+            # Combine base_slug with a random string
+            self.slug = f"{base_slug}-{random_suffix}"
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("catalogue:product_detail", args=[self.slug])
